@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>EC2 Status Dashboard</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; padding: 20px; background-color: #f4f4f4; }
+        .container { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+        .info-list { list-style: none; padding: 0; }
+        .info-list li { margin-bottom: 10px; padding: 8px; background: #fafafa; border-left: 5px solid #007bff; }
+        .footer { margin-top: 20px; font-size: 0.8em; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>EC2 System Dashboard</h1>
+        <p><strong>管理員資訊：</strong> {{ admin_info.name }} (環境: {{ admin_info.env }})</p>
+
+        <ul class="info-list">
+            <li><strong>主機名稱 (Inventory):</strong> {{ inventory_hostname }}</li>
+            <li><strong>作業系統版本:</strong> {{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_version'] }}</li>
+            <li><strong>內部 IP 位址:</strong> {{ ansible_facts['default_ipv4']['address'] }}</li>
+            <li><strong>系統運作時間:</strong> {{ ec2_uptime.stdout }}</li>
+            <li><strong>CPU 核心數:</strong> {{ ansible_facts['processor_vcpus'] }}</li>
+            <li><strong>記憶體總量:</strong> {{ ansible_facts['memtotal_mb'] }} MB</li>
+        </ul>
+
+        <div class="footer">
+            最後更新時間 (Ansible): {{ ansible_facts['date_time']['iso8601'] }}
+        </div>
+    </div>
+</body>
+</html>

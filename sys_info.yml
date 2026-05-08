@@ -1,0 +1,37 @@
+- name: 建立 EC2 系統資訊儀表板
+  hosts: all
+  become: yes  # 安裝套件需要 sudo 權限
+
+  # [需求 1] 定義變數 (Variable Types & Scoping)
+  vars:
+    install_packages:
+      - nginx
+      - git
+    admin_info:
+      name: 'Ian'
+      env: 'Dev'
+
+  tasks:
+    # [需求 5] 安裝軟體並啟動 Nginx
+    - name: 安裝必要的套件
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ install_packages }}"
+
+    - name: 確保 Nginx 已啟動
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    # [需求 2] 取得開機時間並註冊變數 (Registering Variables)
+    - name: 執行 uptime 指令
+      command: uptime -p
+      register: ec2_uptime
+
+    # [需求 3, 4, 最終整合] 產生 HTML 網頁
+    - name: 產生 HTML 狀態儀表板
+      template:
+         src: templates/dashboard.html.j2  # 模板來源路徑
+         dest: /usr/share/nginx/html/index.html
