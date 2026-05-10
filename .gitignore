@@ -20,3 +20,31 @@ Icon
 
 .idea
 *.iml
+
+# 1. 忽略 Terraform 的套件目錄 (Provider 二進位檔)
+.terraform/
+
+# 2. 忽略所有的狀態檔案 (內含敏感明文資料)
+*.tfstate
+*.tfstate.*
+
+# 3. 忽略自動生成的變數檔案
+*.tfvars
+*.tfvars.json
+
+# 4. 忽略本地的設定與覆蓋檔
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# 5. 忽略 Terraform 崩潰日誌
+crash.log
+
+# 6. 忽略 CLI 的設定檔
+.terraformrc
+terraform.rc
+
+# 7. 針對你目前的專案：建議忽略本地 SSH 密鑰 (如果意外複製進來的話)
+*.pub
+*.pem
