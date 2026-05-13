@@ -29,3 +29,13 @@ resource "aws_instance" "web" {
     Admin       = each.value.admin
   }
 }
+
+terraform {
+  backend "s3" {
+    bucket         = "tf-state-bucket-r05323039"
+    dynamodb_table = "tf-state-locks-r05323039"
+
+    key            = "demo/dev/terraform.tfstate"
+    region         = "us-east-1"
+  }
+}
