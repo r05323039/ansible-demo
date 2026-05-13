@@ -1,13 +1,9 @@
-locals {
-  config = yamldecode(file("../settings.yml"))
-}
-
 provider "aws" {
-  region = local.config.common.aws_region
+  region = "us-east-1"
 }
 
 resource "aws_key_pair" "demo_key" {
-  key_name   = local.config.common.key_name
+  key_name   = "demo-key"
   public_key = file("~/.ssh/id_ed25519.pub")
 }
 
@@ -21,12 +17,10 @@ data "aws_ami" "amazon_linux" {
 }
 
 resource "aws_instance" "web" {
-  for_each      = local.config.servers
+  for_each      = var.server_configs
 
   ami           = data.aws_ami.amazon_linux.id
-  instance_type = local.config.common.instance_type
-
-  # 【修改點】：改用資源引用，確保先傳公鑰再建機器
+  instance_type = "t2.micro"
   key_name      = aws_key_pair.demo_key.key_name
 
   tags = {
