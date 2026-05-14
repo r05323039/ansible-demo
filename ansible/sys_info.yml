@@ -7,9 +7,6 @@
     install_packages:
       - nginx
       - git
-    admin_info:
-      name: 'Ian'
-      env: 'Dev'
 
   tasks:
     # [需求 5] 安裝軟體並啟動 Nginx
